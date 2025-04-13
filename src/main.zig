@@ -8,7 +8,6 @@ const lib = @import("customui");
 const light_grey: clay.Color = .{ 224, 215, 210, 255 };
 const COLOR_RED = clay.Color{ 168, 66, 28, 255 };
 
-
 // const stdout_file = std.io.getStdOut().writer();
 // var bw = std.io.bufferedWriter(stdout_file);
 // const stdout = bw.writer();
@@ -24,7 +23,11 @@ pub fn main() !void {
     const memory = try allocator.alloc(u8, min_memory_size);
     defer allocator.free(memory);
     const arena: clay.Arena = clay.createArenaWithCapacityAndMemory(memory);
-    _ = clay.initialize(arena, .{ .h = 1000, .w = 1000 }, .{});
+    _ = clay.initialize(
+        arena,
+        .{ .h = 1000, .w = 1000 },
+        .{},
+    );
     clay.setMeasureTextFunction(void, {}, renderer.measureText);
 
     // init raylib
@@ -61,25 +64,33 @@ pub fn main() !void {
 }
 
 fn loadFont(file_data: ?[]const u8, font_id: u16, font_size: i32) !void {
-    renderer.raylib_fonts[font_id] = try raylib.loadFontFromMemory(".ttf", file_data, font_size * 2, null);
-    raylib.setTextureFilter(renderer.raylib_fonts[font_id].?.texture, .bilinear);
+    renderer.raylib_fonts[font_id] = try raylib.loadFontFromMemory(
+        ".ttf",
+        file_data,
+        font_size * 2,
+        null,
+    );
+    raylib.setTextureFilter(
+        renderer.raylib_fonts[font_id].?.texture,
+        .bilinear,
+    );
 }
 
 fn createLayout() clay.ClayArray(clay.RenderCommand) {
-  clay.beginLayout();
-  clay.UI()(.{
-   .id = .ID("Container"),
-   .layout = .{
-    .direction = .top_to_bottom,
-    .sizing = .{.h = .grow, .w = .grow},
-    .padding = .all(16),
-    .child_alignment = .{.x = .center, .y = .top},
-    .child_gap = 16
-   }
-  })({
-    clay.text("Clay - UI Library", .{ .font_size = 24, .color = COLOR_RED });  
-  });
-  return clay.endLayout();
+    clay.beginLayout();
+    clay.UI()(.{ .id = .ID("Container"), .layout = .{
+        .direction = .top_to_bottom,
+        .sizing = .{ .h = .grow, .w = .grow },
+        .padding = .all(16),
+        .child_alignment = .{ .x = .center, .y = .top },
+        .child_gap = 16,
+    } })({
+        clay.text("Clay - UI Library", .{
+            .font_size = 24,
+            .color = COLOR_RED,
+        });
+    });
+    return clay.endLayout();
 }
 
 // test "simple test" {
