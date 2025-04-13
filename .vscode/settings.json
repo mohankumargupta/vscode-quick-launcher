@@ -1,0 +1,7 @@
+{
+    "zig.zls.enabled": "on",
+    "editor.formatOnSave": true,
+    "terminal.integrated.env.windows": {
+        "PATH": "${env:USERPROFILE}\\Downloads\\vscode-zig\\data\\user-data\\User\\globalStorage\\ziglang.vscode-zig\\zig\\windows-x86_64-0.14.0;${env:PATH}"
+    }
+}
