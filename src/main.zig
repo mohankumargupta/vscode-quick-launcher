@@ -89,8 +89,27 @@ fn createLayout() clay.ClayArray(clay.RenderCommand) {
             .font_size = 24,
             .color = COLOR_RED,
         });
+        button(0, "Button1");
     });
     return clay.endLayout();
+}
+
+fn button(index: u32, text: []const u8) void {
+    clay.UI()(.{ .id = .IDI("Button", index), .corner_radius = .all(32), .layout = .{
+        .sizing = .{ .w = .growMinMax(.{ .max = 500 }) },
+        .direction = .top_to_bottom,
+        .child_alignment = .{ .x = .center },
+        .padding = .all(32),
+        .child_gap = 32,
+    }, .border = .{
+        .width = .outside(4),
+        .color = COLOR_RED,
+    } })({
+        clay.text(text, .{
+            .font_size = 16,
+            .color = COLOR_RED,
+        });
+    });
 }
 
 // test "simple test" {
