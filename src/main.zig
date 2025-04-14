@@ -21,15 +21,20 @@ pub fn main() !void {
     //std.debug.print("hello {s}", .{"world"});
     //const allocator = std.heap.page_allocator;
     var gpa = std.heap.GeneralPurposeAllocator(.{}){};
-    defer _ = gpa.deinit(); 
+    defer _ = gpa.deinit();
     const allocator = gpa.allocator();
-    
+
     // init clay
     const min_memory_size: u32 = clay.minMemorySize();
     const memory = try allocator.alloc(u8, min_memory_size);
     defer allocator.free(memory);
 
-    _ = try lib.checkConfigExists(allocator);
+    const config_exists = try lib.checkConfigExists(allocator);
+    if (!config_exists) {
+        std.log.err("App config does not exist.", .{});
+    } else {
+        std.log.err("App config found.", .{});
+    }
 
     const arena: clay.Arena = clay.createArenaWithCapacityAndMemory(memory);
     _ = clay.initialize(

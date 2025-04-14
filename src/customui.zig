@@ -25,9 +25,12 @@ fn getFolder(allocator: std.mem.Allocator, folder_components: []const []const u8
 }
 
 pub fn checkConfigExists(allocator: std.mem.Allocator) !bool {
-    const config_folder = try getFolder(allocator, &.{ CONFIG_FOLDER, CONFIG_NAME });
-    defer allocator.free(config_folder);
+    const config_path = try getFolder(allocator, &.{ CONFIG_FOLDER, CONFIG_NAME });
+    defer allocator.free(config_path);
     //std.debug.print("{s}", .{downloads_folder});
-    std.log.err("This is an err message - {s}", .{config_folder});
+    //std.log.err("This is an err message - {s}", .{config_path});
+    // use std.fs.cwd().openFile for files relative to the current directory
+    const file = std.fs.openFileAbsolute(config_path, .{}) catch return false;
+    file.close();
     return true;
 }
