@@ -6,7 +6,9 @@ const renderer = @import("raylib_render_clay.zig");
 const lib = @import("customui");
 
 const light_grey: clay.Color = .{ 224, 215, 210, 255 };
-const COLOR_RED = clay.Color{ 168, 66, 28, 255 };
+const COLOR_RED: clay.Color = .{ 168, 66, 28, 255 };
+const COLOR_BEACH = raylib.Color.init(241, 239, 223,255);
+
 
 // const stdout_file = std.io.getStdOut().writer();
 // var bw = std.io.bufferedWriter(stdout_file);
@@ -57,7 +59,7 @@ pub fn main() !void {
         var render_commands = createLayout();
 
         raylib.beginDrawing();
-        raylib.clearBackground(.ray_white);
+        raylib.clearBackground(COLOR_BEACH);
         try renderer.clayRaylibRender(&render_commands, allocator);
         raylib.endDrawing();
     }
@@ -85,11 +87,11 @@ fn createLayout() clay.ClayArray(clay.RenderCommand) {
         .child_alignment = .{ .x = .center, .y = .top },
         .child_gap = 16,
     } })({
-        clay.text("Clay - UI Library", .{
-            .font_size = 24,
-            .color = COLOR_RED,
-        });
-        button(0, "Button1");
+        // clay.text("Clay - UI Library", .{
+        //     .font_size = 24,
+        //     .color = COLOR_RED,
+        // });
+        // button(0, "Button1");
     });
     return clay.endLayout();
 }
