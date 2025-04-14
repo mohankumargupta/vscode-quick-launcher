@@ -7,8 +7,9 @@ const lib = @import("customui");
 
 const light_grey: clay.Color = .{ 224, 215, 210, 255 };
 const COLOR_RED: clay.Color = .{ 168, 66, 28, 255 };
-const COLOR_BEACH = raylib.Color.init(241, 239, 223,255);
-
+const COLOR_BEACH = raylib.Color.init(241, 239, 223, 255);
+const COLOR_WHITE: clay.Color = .{ 255, 255, 255, 255 };
+const COLOR_BLACK: clay.Color = .{ 0, 0, 0, 255 };
 
 // const stdout_file = std.io.getStdOut().writer();
 // var bw = std.io.bufferedWriter(stdout_file);
@@ -80,13 +81,33 @@ fn loadFont(file_data: ?[]const u8, font_id: u16, font_size: i32) !void {
 
 fn createLayout() clay.ClayArray(clay.RenderCommand) {
     clay.beginLayout();
-    clay.UI()(.{ .id = .ID("Container"), .layout = .{
-        .direction = .top_to_bottom,
-        .sizing = .{ .h = .grow, .w = .grow },
-        .padding = .all(16),
-        .child_alignment = .{ .x = .center, .y = .top },
-        .child_gap = 16,
-    } })({
+    clay.UI()(.{
+        .id = .ID("Container"),
+        .layout = .{
+            .direction = .top_to_bottom,
+            .sizing = .{ .h = .grow, .w = .grow },
+            .padding = .{ .left = 32, .right = 32, .top = 48 },
+            .child_alignment = .{ .x = .left, .y = .top },
+            .child_gap = 16,
+        },
+    })({
+        clay.UI()(.{
+            .id = .ID("QuickLaunch"),
+            .layout = .{
+                .direction = .top_to_bottom,
+                .sizing = .{ .h = .fixed(500), .w = .grow },
+                //.child_alignment = .{.x = .left, .y = .top},
+                //.padding = { .left = 20, .right = 20, .top = 50, .bottom = 0},
+            },
+            .border = .{ .width = .all(2), .color = COLOR_BLACK },
+            .background_color = COLOR_WHITE,
+        })({
+            clay.text("Clay - UI Library", .{
+                .font_size = 24,
+                .color = COLOR_RED,
+            });
+        });
+
         // clay.text("Clay - UI Library", .{
         //     .font_size = 24,
         //     .color = COLOR_RED,
