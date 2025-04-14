@@ -19,12 +19,18 @@ const COLOR_BLACK: clay.Color = .{ 0, 0, 0, 255 };
 
 pub fn main() !void {
     //std.debug.print("hello {s}", .{"world"});
-    const allocator = std.heap.page_allocator;
-
+    //const allocator = std.heap.page_allocator;
+    var gpa = std.heap.GeneralPurposeAllocator(.{}){};
+    defer _ = gpa.deinit(); 
+    const allocator = gpa.allocator();
+    
     // init clay
     const min_memory_size: u32 = clay.minMemorySize();
     const memory = try allocator.alloc(u8, min_memory_size);
     defer allocator.free(memory);
+
+    _ = try lib.checkConfigExists(allocator);
+
     const arena: clay.Arena = clay.createArenaWithCapacityAndMemory(memory);
     _ = clay.initialize(
         arena,
@@ -38,7 +44,7 @@ pub fn main() !void {
         .msaa_4x_hint = true,
         .window_resizable = true,
     });
-    raylib.initWindow(1000, 1000, "Raylib zig Example");
+    raylib.initWindow(1000, 1000, "VSCode Portable Quick Launcher");
     raylib.setWindowMinSize(300, 100);
     raylib.setTargetFPS(10);
 
