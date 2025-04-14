@@ -1,4 +1,8 @@
 const std = @import("std");
+
+const CONFIG_FOLDER = ".vscode-quick-launcher";
+const CONFIG_NAME = "vscode-portable-quick-launcher.zon";
+
 // const testing = std.testing;
 
 // pub export fn add(a: i32, b: i32) i32 {
@@ -16,14 +20,14 @@ fn getFolder(allocator: std.mem.Allocator, folder_components: []const []const u8
     defer components.deinit();
     try components.append(user_profile_folder);
     try components.appendSlice(folder_components);
-    const absolute_folder_path = try std.fs.path.join(allocator, folder_components);
+    const absolute_folder_path = try std.fs.path.join(allocator, components.items);
     return absolute_folder_path;
 }
 
 pub fn checkConfigExists(allocator: std.mem.Allocator) !bool {
-    const downloads_folder = try getFolder(allocator, &.{ "Downloads", "boo" });
-    defer allocator.free(downloads_folder);
+    const config_folder = try getFolder(allocator, &.{ CONFIG_FOLDER, CONFIG_NAME });
+    defer allocator.free(config_folder);
     //std.debug.print("{s}", .{downloads_folder});
-    std.log.err("This is an err message - {s}", .{downloads_folder});
+    std.log.err("This is an err message - {s}", .{config_folder});
     return true;
 }
