@@ -49,7 +49,7 @@ pub fn main() !void {
         .msaa_4x_hint = true,
         .window_resizable = true,
     });
-    raylib.initWindow(1000, 1000, "VSCode Portable Quick Launcher");
+    raylib.initWindow(1024, 768, "VSCode Portable Quick Launcher");
     raylib.setWindowMinSize(300, 100);
     raylib.setTargetFPS(10);
 
