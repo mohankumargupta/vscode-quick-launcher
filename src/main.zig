@@ -37,11 +37,18 @@ pub fn main() !void {
     }
 
     var vscode_folders = std.ArrayList([]const u8).init(allocator);
-    defer vscode_folders.deinit();
+    //defer vscode_folders.deinit();
+    defer {
+        for (vscode_folders.items) |folder_slice| {
+            allocator.free(folder_slice); // Free each duplicated string
+        }
+        vscode_folders.deinit(); // Free the list's internal buffer
+    }
+
     try lib.findVSCodePortableFolderNames(allocator, &vscode_folders);
 
     for (vscode_folders.items) |folder| {
-        std.log.err("name: {s}", .{folder});
+        std.log.err("ignore for now: {s}", .{folder});
     }
 
     const arena: clay.Arena = clay.createArenaWithCapacityAndMemory(memory);

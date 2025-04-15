@@ -50,7 +50,7 @@ pub fn findVSCodePortableFolderNames(allocator: std.mem.Allocator, vscode_folder
             .directory => {
                 if (std.mem.startsWith(u8, entry.name, "vscode-")) {
                     //std.log.err("name: {s}", .{entry.name});
-                    try vscode_folders.append(entry.name);
+                    try vscode_folders.append(try allocator.dupe(u8, entry.name));
                 }
             },
             else => continue :blk,
