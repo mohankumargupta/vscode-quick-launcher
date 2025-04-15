@@ -36,7 +36,9 @@ pub fn main() !void {
         std.log.err("App config found.", .{});
     }
 
-    try lib.findVSCodePortableFolderNames(allocator);
+    var vscode_folders = std.ArrayList(u8).init(allocator);
+    defer vscode_folders.deinit();
+    try lib.findVSCodePortableFolderNames(allocator, &vscode_folders);
 
     const arena: clay.Arena = clay.createArenaWithCapacityAndMemory(memory);
     _ = clay.initialize(
