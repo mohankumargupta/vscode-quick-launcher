@@ -124,7 +124,7 @@ fn quickLaunch() void {
     });
 }
 
-fn folderListing() void {
+fn folderListing(folders: []const []const u8) void {
     clay.UI()(.{
         .id = .ID("QuickLaunch"),
         .layout = .{
@@ -133,13 +133,15 @@ fn folderListing() void {
             //.child_alignment = .{.x = .left, .y = .top},
             //.padding = { .left = 20, .right = 20, .top = 50, .bottom = 0},
         },
-        .border = .{ .width = .all(2), .color = COLOR_BLACK },
+        //.border = .{ .width = .all(2), .color = COLOR_BLACK },
         .background_color = COLOR_WHITE,
     })({
-        clay.text("Clay - UI Library", .{
-            .font_size = 24,
-            .color = COLOR_RED,
-        });
+        for (folders) |folder| {
+            clay.text(folder, .{
+                .font_size = 24,
+                .color = COLOR_RED,
+            });
+        }
     });
 }
 
@@ -164,7 +166,8 @@ fn createLayout() clay.ClayArray(clay.RenderCommand) {
             },
         })({
             quickLaunch();
-            folderListing();
+            const boo: [3][]const u8 = .{ "one", "two", "three" };
+            folderListing(boo[0..]);
         });
     });
     return clay.endLayout();
