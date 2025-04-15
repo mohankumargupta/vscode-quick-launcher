@@ -32,7 +32,7 @@ pub fn checkConfigExists(allocator: std.mem.Allocator) !bool {
     return true;
 }
 
-pub fn findVSCodePortableFolderNames(allocator: std.mem.Allocator, vscode_folders: *std.ArrayList(u8)) !void {
+pub fn findVSCodePortableFolderNames(allocator: std.mem.Allocator, vscode_folders: *std.ArrayList([]u8)) !void {
     const downloads_paths = try getFolder(
         allocator,
         &.{"Downloads"},
@@ -49,8 +49,11 @@ pub fn findVSCodePortableFolderNames(allocator: std.mem.Allocator, vscode_folder
         switch (entry.kind) {
             .directory => {
                 if (std.mem.startsWith(u8, entry.name, "vscode-")) {
-                    std.log.err("name: {s}", .{entry.name});
-                    try vscode_folders.appendSlice(entry.name);
+                    //std.log.err("name: {s}", .{entry.name});
+                    const name_copy = try allocator.alloc(u8, entry.name.len);
+                    defer allocator.free(name_copy);
+                    @memcpy(name_copy, entry.name);
+                    try vscode_folders.append(name_copy);
                 }
             },
             else => continue :blk,
