@@ -48,7 +48,7 @@ pub fn main() !void {
     try lib.findVSCodePortableFolderNames(allocator, &vscode_folders);
 
     for (vscode_folders.items) |folder| {
-        std.log.err("ignore for now: {s}", .{folder});
+        std.log.err("vscode portable folders found: {s}", .{folder});
     }
 
     const arena: clay.Arena = clay.createArenaWithCapacityAndMemory(memory);
@@ -105,6 +105,44 @@ fn loadFont(file_data: ?[]const u8, font_id: u16, font_size: i32) !void {
     );
 }
 
+fn quickLaunch() void {
+    clay.UI()(.{
+        .id = .ID("QuickLaunch"),
+        .layout = .{
+            .direction = .top_to_bottom,
+            .sizing = .{ .h = .fixed(500), .w = .percent(0.75) },
+            //.child_alignment = .{.x = .left, .y = .top},
+            //.padding = { .left = 20, .right = 20, .top = 50, .bottom = 0},
+        },
+        .border = .{ .width = .all(2), .color = COLOR_BLACK },
+        .background_color = COLOR_WHITE,
+    })({
+        clay.text("Clay - UI Library", .{
+            .font_size = 24,
+            .color = COLOR_RED,
+        });
+    });
+}
+
+fn folderListing() void {
+    clay.UI()(.{
+        .id = .ID("QuickLaunch"),
+        .layout = .{
+            .direction = .top_to_bottom,
+            .sizing = .{ .h = .fixed(500), .w = .percent(0.25) },
+            //.child_alignment = .{.x = .left, .y = .top},
+            //.padding = { .left = 20, .right = 20, .top = 50, .bottom = 0},
+        },
+        .border = .{ .width = .all(2), .color = COLOR_BLACK },
+        .background_color = COLOR_WHITE,
+    })({
+        clay.text("Clay - UI Library", .{
+            .font_size = 24,
+            .color = COLOR_RED,
+        });
+    });
+}
+
 fn createLayout() clay.ClayArray(clay.RenderCommand) {
     clay.beginLayout();
     clay.UI()(.{
@@ -118,27 +156,16 @@ fn createLayout() clay.ClayArray(clay.RenderCommand) {
         },
     })({
         clay.UI()(.{
-            .id = .ID("QuickLaunch"),
+            .id = .ID("InnerContainer"),
             .layout = .{
-                .direction = .top_to_bottom,
-                .sizing = .{ .h = .fixed(500), .w = .grow },
-                //.child_alignment = .{.x = .left, .y = .top},
-                //.padding = { .left = 20, .right = 20, .top = 50, .bottom = 0},
+                .direction = .left_to_right,
+                .sizing = .{ .h = .grow, .w = .grow },
+                .child_gap = 16,
             },
-            .border = .{ .width = .all(2), .color = COLOR_BLACK },
-            .background_color = COLOR_WHITE,
         })({
-            clay.text("Clay - UI Library", .{
-                .font_size = 24,
-                .color = COLOR_RED,
-            });
+            quickLaunch();
+            folderListing();
         });
-
-        // clay.text("Clay - UI Library", .{
-        //     .font_size = 24,
-        //     .color = COLOR_RED,
-        // });
-        // button(0, "Button1");
     });
     return clay.endLayout();
 }
