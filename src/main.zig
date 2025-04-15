@@ -83,7 +83,7 @@ pub fn main() !void {
             .w = @floatFromInt(raylib.getScreenWidth()),
             .h = @floatFromInt(raylib.getScreenHeight()),
         });
-        var render_commands = createLayout();
+        var render_commands = createLayout(vscode_folders.items);
 
         raylib.beginDrawing();
         raylib.clearBackground(COLOR_BEACH);
@@ -145,7 +145,7 @@ fn folderListing(folders: []const []const u8) void {
     });
 }
 
-fn createLayout() clay.ClayArray(clay.RenderCommand) {
+fn createLayout(folders: [][]const u8) clay.ClayArray(clay.RenderCommand) {
     clay.beginLayout();
     clay.UI()(.{
         .id = .ID("Container"),
@@ -166,8 +166,9 @@ fn createLayout() clay.ClayArray(clay.RenderCommand) {
             },
         })({
             quickLaunch();
-            const boo: [3][]const u8 = .{ "one", "two", "three" };
-            folderListing(boo[0..]);
+            //const boo: [3][]const u8 = .{ "one", "two", "three" };
+            //folderListing(boo[0..]);
+            folderListing(folders[0..]);
         });
     });
     return clay.endLayout();
