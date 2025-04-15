@@ -36,7 +36,7 @@ pub fn main() !void {
         std.log.err("App config found.", .{});
     }
 
-    var vscode_folders = std.ArrayList([]u8).init(allocator);
+    var vscode_folders = std.ArrayList([]const u8).init(allocator);
     defer vscode_folders.deinit();
     try lib.findVSCodePortableFolderNames(allocator, &vscode_folders);
 
